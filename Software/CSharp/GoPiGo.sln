@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driver", "Driver\Driver.csproj", "{63DEDC38-171C-4E23-9B6B-E7FE23F63597}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoPiGo", "GoPiGo\GoPiGo.csproj", "{F68E38F7-F997-4953-B37A-2CAA3D7D3383}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFGoPiGoControler", "WFGoPiGoControler\WFGoPiGoControler.csproj", "{D03548D2-D6BF-4CC4-A05B-7197A420C50A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,26 @@ Global
 		{F68E38F7-F997-4953-B37A-2CAA3D7D3383}.Release|x64.Build.0 = Release|x64
 		{F68E38F7-F997-4953-B37A-2CAA3D7D3383}.Release|x86.ActiveCfg = Release|x86
 		{F68E38F7-F997-4953-B37A-2CAA3D7D3383}.Release|x86.Build.0 = Release|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|ARM.Build.0 = Debug|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|ARM.Deploy.0 = Debug|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x64.ActiveCfg = Debug|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x64.Build.0 = Debug|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x64.Deploy.0 = Debug|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x86.ActiveCfg = Debug|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x86.Build.0 = Debug|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Debug|x86.Deploy.0 = Debug|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|Any CPU.ActiveCfg = Release|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|ARM.ActiveCfg = Release|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|ARM.Build.0 = Release|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|ARM.Deploy.0 = Release|ARM
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x64.ActiveCfg = Release|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x64.Build.0 = Release|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x64.Deploy.0 = Release|x64
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x86.ActiveCfg = Release|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x86.Build.0 = Release|x86
+		{D03548D2-D6BF-4CC4-A05B-7197A420C50A}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

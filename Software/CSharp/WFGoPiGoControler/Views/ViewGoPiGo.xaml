@@ -1,0 +1,114 @@
+﻿<Page
+    x:Class="WFGoPiGoControler.Views.ViewGoPiGo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WFGoPiGoControler.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="/ResourceDictionaries/ResourceDictionaryWFGoPiGoControler.xaml"/>
+                <!--Template for the Cool looking arrown button can be found 
+                in the arrow Button Template so it has the possibility of
+                being used in other projects-->
+                <ResourceDictionary Source="/ResourceDictionaries/ResourceDictionaryArrowBTN.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" KeyUp="{x:Bind viewModel.KeyUp}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="370"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+     
+        <Grid Grid.Column="0" VerticalAlignment="Top" >
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="350"  VerticalAlignment="Center" Width="253" Margin="10,10,0,0">
+                <Grid Name="GrdRightContent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border  Background="#FFF4F4F5" BorderBrush="Black" BorderThickness="1" Width="245" Height="37">
+                        <TextBlock x:Name="lblKeyBoardControls" Height="{StaticResource ControlHeight}" TextWrapping="Wrap" Text="Keyboard Controls" VerticalAlignment="Center" FontSize="21.333" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                    </Border>
+
+                    <Button Height="{StaticResource ControlHeight}" Grid.Row="1" HorizontalAlignment="Center">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FFDCF9D1" Offset="1"/>
+                                <GradientStop Color="#FF46AA17"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+
+                        <Grid>
+                            <Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z"/>
+                        </Grid>
+                    </Button>
+
+                    <!--<StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button Grid.Row="2" Height="{StaticResource ControlHeight}">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                    <GradientStop Color="#FFDCF9D1" Offset="1"/>
+                                    <GradientStop Color="#FF46AA17"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <CompositeTransform Rotation="-90"/>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Button>
+                        <Border Width="50"/>
+                        <Button Height="{StaticResource ControlHeight}" Grid.Row="2">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                    <GradientStop Color="#FFDCF9D1"/>
+                                    <GradientStop Color="#FF46AA17" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <CompositeTransform Rotation="90"/>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Button>
+                    </StackPanel>-->
+
+                    <Button Height="{StaticResource ControlHeight}" Grid.Row="3" HorizontalAlignment="Center">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,1" EndPoint="0,0" >
+                                <GradientStop Color="#FFDCF9D1" Offset="1"/>
+                                <GradientStop Color="#FF46AA17"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+
+                        <Grid>
+                            <Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <CompositeTransform Rotation="180"/>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </Button>
+                    <Grid Grid.Row="4">
+                        <Border BorderThickness="1">
+                            <TextBlock TextWrapping="Wrap"> Press W to move the motor foreward&#x0a; Press S to stop the Motor &#x0a; Press X to have the motor turn in reverse </TextBlock>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
