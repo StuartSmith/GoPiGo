@@ -11,7 +11,7 @@
  * **********************************************************************
  * %%
  * GoPiGo for the Raspberry Pi: an open source robotics platform for the Raspberry Pi.
- * Copyright (C) 2015  Dexter Industries
+ * Copyright (C) 2017  Dexter Industries
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,14 @@ public class Board {
       busId = I2CBus.BUS_1;
     }
 
-    final I2CBus bus = I2CFactory.getInstance(busId);
+    I2CBus bus = null;
+
+    try {
+      bus = I2CFactory.getInstance(busId);
+    } catch (Exception e) {
+      throw new IOException(e.getMessage());
+    }
+
     device = bus.getDevice(ADDRESS);
   }
 

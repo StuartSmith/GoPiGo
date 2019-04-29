@@ -10,7 +10,7 @@
 // ## License
 //
 // GoPiGo for the Raspberry Pi: an open source robotics platform for the Raspberry Pi.
-// Copyright (C) 2015  Dexter Industries
+// Copyright (C) 2017  Dexter Industries
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,13 +32,12 @@
 #define READ_BUF_SIZE 32
 
 int fd;
-char *fileName = "/dev/i2c-1";
-int  address = 0x08;
+const char *fileName = "/dev/i2c-1";
+const int address = 0x08;
 unsigned char w_buf[WRITE_BUF_SIZE],r_buf[READ_BUF_SIZE];
-unsigned long reg_addr=0;
+const unsigned long reg_addr=0;
 int version=200;    //Initialized with invalid version
-int v16_thresh=790;
-int LED_L=1,LED_R=0;
+const int v16_thresh=790;
 
 int init(void)
 {

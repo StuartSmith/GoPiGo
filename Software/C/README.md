@@ -1,9 +1,9 @@
-#GoPiGo in C
+# GoPiGo in C
 
 This repository contains source code, firmware and design materials for the GoPiGo in the C Language.
 
-#####To Compile:  gcc gopigo.c [your_file_name.c] -o gopigo -Wall
-#####To run: ./gopigo
+##### To Compile:  gcc gopigo.c [your_file_name.c] -o gopigo -Wall
+##### To run: ./gopigo
 
 **Notes:**
 - The compile command uses the basic commands from gopigo.c library 
@@ -54,7 +54,7 @@ target_link_libraries(your_executable ${gopigo_LIBRARIES})
 
 ![ GoPiGo ](https://raw.githubusercontent.com/DexterInd/GoPiGo/master/GoPiGo_Front_Facing_Camera300.jpg)
 
-#See Also
+# See Also
 
 - [Dexter Industries] (http://www.dexterindustries.com/GoPiGo)
 - [Kickstarter Campaign] (http://kck.st/Q6vVOP)
@@ -62,7 +62,7 @@ target_link_libraries(your_executable ${gopigo_LIBRARIES})
 
 ## License
 GoPiGo for the Raspberry Pi: an open source robotics platform for the Raspberry Pi.
-Copyright (C) 2015  Dexter Industries
+Copyright (C) 2017  Dexter Industries
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

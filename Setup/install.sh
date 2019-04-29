@@ -1,140 +1,109 @@
 #! /bin/bash
-echo "  _____            _                                ";
-echo " |  __ \          | |                               ";
-echo " | |  | | _____  _| |_ ___ _ __                     ";
-echo " | |  | |/ _ \ \/ / __/ _ \ '__|                    ";
-echo " | |__| |  __/>  <| ||  __/ |                       ";
-echo " |_____/ \___/_/\_\\__\___|_| _        _            ";
-echo " |_   _|         | |         | |      (_)           ";
-echo "   | |  _ __   __| |_   _ ___| |_ _ __ _  ___  ___  ";
-echo "   | | | '_ \ / _\` | | | / __| __| '__| |/ _ \/ __|";
-echo "  _| |_| | | | (_| | |_| \__ \ |_| |  | |  __/\__ \ ";
-echo " |_____|_| |_|\__,_|\__,_|___/\__|_|  |_|\___||___/ ";
-echo "                                                    ";
-echo "                                                    ";
-echo " "
-printf "Welcome to GoPiGo Installer.\nPlease ensure internet connectivity before running this script.\n
-NOTE: Raspberry Pi wil reboot after completion."
-printf "Special thanks to Joe Sanford at Tufts University.  This script was derived from his work.  Thank you Joe!"
-printf " "
-echo "Must be running as Root user"
-echo " "
-echo "Press ENTER to begin..."
-# read
+SCRIPT_DIR="$(readlink -f $(dirname $0))"
+ROBOT_DIR="${SCRIPT_DIR%/*}"
+PIHOME=/home/pi
+DEXTERSCRIPT=$PIHOME/Dexter/lib/Dexter/script_tools
 
-echo " "
-echo "Check for internet connectivity..."
-echo "=================================="
-wget -q --tries=2 --timeout=20 http://raspberrypi.org
-if [ $? -eq 0 ];then
-	echo "Connected"
-else
-	echo "Unable to Connect, try again !!!"
-	exit 0
-fi
+source $DEXTERSCRIPT/functions_library.sh
 
-echo " "
-echo "Installing Dependencies"
-echo "======================="
-sudo apt-get install python-pip git libi2c-dev python-serial python-rpi.gpio i2c-tools python-smbus arduino minicom libnss-mdns python-dev -y
-sudo pip install -U RPi.GPIO
+display_welcome_msg() {
+	echo "Special thanks to Joe Sanford at Tufts University. This script was derived from his work. Thank you Joe!"
+}
 
-echo "Dependencies installed"
+install_dependencies() {
 
-#Copy Software Servo
-cp -R ../Firmware/SoftwareServo/ /usr/share/arduino/libraries/
+    # the sudo apt-get update is already
+    # done by the script_tools installer in
+    # update_gopigo.sh
 
-chmod +x gpg 
-cp gpg /usr/bin
+    feedback "Installing dependencies for the GoPiGo"
+    sudo apt-get install --no-install-recommends -y \
+        git libi2c-dev i2c-tools libnss-mdns build-essential libffi-dev \
+        python-pip python-serial python-rpi.gpio python-smbus python-dev \
+        python3-pip python3-serial python3-rpi.gpio python3-smbus python3-dev
 
-cd ../Software/Python
-python setup.py install
-cd ../../Setup
+    feedback "Dependencies installed for the GoPiGo"
+}
 
-git clone git://git.drogon.net/wiringPi
-cd wiringPi
-./build
-echo "wiringPi Installed"
+check_root_user() {
+    if [[ $EUID -ne 0 ]]; then
+        feedback "FAIL!  This script must be run as such: sudo ./install.sh"
+        exit 1
+    fi
+}
 
-echo " "
-echo "Removing blacklist from /etc/modprobe.d/raspi-blacklist.conf . . ."
-echo "=================================================================="
-if grep -q "#blacklist i2c-bcm2708" /etc/modprobe.d/raspi-blacklist.conf; then
-	echo "I2C already removed from blacklist"
-else
-	sudo sed -i -e 's/blacklist i2c-bcm2708/#blacklist i2c-bcm2708/g' /etc/modprobe.d/raspi-blacklist.conf
-	echo "I2C removed from blacklist"
-fi
-if grep -q "#blacklist spi-bcm2708" /etc/modprobe.d/raspi-blacklist.conf; then
-	echo "SPI already removed from blacklist"
-else
-	sudo sed -i -e 's/blacklist spi-bcm2708/#blacklist spi-bcm2708/g' /etc/modprobe.d/raspi-blacklist.conf
-	echo "SPI removed from blacklist"
-fi
+install_spi_i2c() {
+    feedback "Removing blacklist from /etc/modprobe.d/raspi-blacklist.conf . . ."
+    if grep -q "#blacklist i2c-bcm2708" /etc/modprobe.d/raspi-blacklist.conf; then
+        echo "I2C already removed from blacklist"
+    else
+        sudo sed -i -e 's/blacklist i2c-bcm2708/#blacklist i2c-bcm2708/g' /etc/modprobe.d/raspi-blacklist.conf
+        echo "I2C removed from blacklist"
+    fi
+    if grep -q "#blacklist spi-bcm2708" /etc/modprobe.d/raspi-blacklist.conf; then
+        echo "SPI already removed from blacklist"
+    else
+        sudo sed -i -e 's/blacklist spi-bcm2708/#blacklist spi-bcm2708/g' /etc/modprobe.d/raspi-blacklist.conf
+        echo "SPI removed from blacklist"
+    fi
 
-#Adding in /etc/modules
-echo " "
-echo "Adding I2C-dev and SPI-dev in /etc/modules . . ."
-echo "================================================"
-if grep -q "i2c-dev" /etc/modules; then
-	echo "I2C-dev already there"
-else
-	echo i2c-dev >> /etc/modules
-	echo "I2C-dev added"
-fi
-if grep -q "i2c-bcm2708" /etc/modules; then
-	echo "i2c-bcm2708 already there"
-else
-	echo i2c-bcm2708 >> /etc/modules
-	echo "i2c-bcm2708 added"
-fi
-if grep -q "spi-dev" /etc/modules; then
-	echo "spi-dev already there"
-else
-	echo spi-dev >> /etc/modules
-	echo "spi-dev added"
-fi
+    #Adding in /etc/modules
+    feedback "Adding I2C-dev and SPI-dev in /etc/modules . . ."
+    if grep -q "i2c-dev" /etc/modules; then
+        echo "I2C-dev already there"
+    else
+        echo i2c-dev >> /etc/modules
+        echo "I2C-dev added"
+    fi
+    if grep -q "i2c-bcm2708" /etc/modules; then
+        echo "i2c-bcm2708 already there"
+    else
+        echo i2c-bcm2708 >> /etc/modules
+        echo "i2c-bcm2708 added"
+    fi
+    if grep -q "spi-dev" /etc/modules; then
+        echo "spi-dev already there"
+    else
+        echo spi-dev >> /etc/modules
+        echo "spi-dev added"
+    fi
+    feedback "Making I2C changes in /boot/config.txt . . ."
 
-echo " "
-echo "Making I2C changes in /boot/config.txt . . ."
-echo "================================================"
+    sudo sh -c "echo dtparam=i2c1=on >> /boot/config.txt"
+    sudo sh -c "echo dtparam=i2c_arm=on >> /boot/config.txt"
 
-echo dtparam=i2c1=on >> /boot/config.txt
-echo dtparam=i2c_arm=on >> /boot/config.txt
+    sudo adduser pi i2c
+}
 
-#Adding ARDUINO setup files
-echo " "
-echo "Making changes to Arduino . . ."
-echo "==============================="
-cd /tmp
-wget http://project-downloads.drogon.net/gertboard/avrdude_5.10-4_armhf.deb
-sudo dpkg -i avrdude_5.10-4_armhf.deb
-sudo chmod 4755 /usr/bin/avrdude
+install_avr() {
+  feedback "Installing avrdude for the GoPiGo"
+	source $DEXTERSCRIPT/install_avrdude.sh
+  create_avrdude_folder
+  install_avrdude
+  cd $ROBOT_DIR
+  echo "done with AVRDUDE "
+}
 
-cd /tmp
-wget http://project-downloads.drogon.net/gertboard/setup.sh
-chmod +x setup.sh
-sudo ./setup.sh
+install_control_panel() {
+    cp "$ROBOT_DIR/Software/Python/control_panel/gopigo_control_panel.desktop" $PIHOME/Desktop
+}
 
-#Enabling serial port in Arduino IDE
-crontab -l > file; echo '@reboot ln -sf /dev/ttyAMA0 /dev/ttyS0' >> file; crontab file
-rm file
+############################################################################
+############################################################################
 
-sudo rm -r /tmp/di_update
+check_root_user
+install_dependencies
 
-sudo adduser pi i2c
-sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/*.sh
+# copy software servo
+# we might also want to delete $ROBOT_DIR/Firmware/SoftwareServo from the repo for good
+# sudo cp -R $ROBOT_DIR/Firmware/SoftwareServo/ /usr/share/arduino/libraries/
 
-echo " "
-echo "Please restart the Raspberry Pi for the changes to take effect"
-echo " "
-echo "Please restart to implement changes!"
-echo "  _____  ______  _____ _______       _____ _______ "
-echo " |  __ \|  ____|/ ____|__   __|/\   |  __ \__   __|"
-echo " | |__) | |__  | (___    | |  /  \  | |__) | | |   "
-echo " |  _  /|  __|  \___ \   | | / /\ \ |  _  /  | |   "
-echo " | | \ \| |____ ____) |  | |/ ____ \| | \ \  | |   "
-echo " |_|  \_\______|_____/   |_/_/    \_\_|  \_\ |_|   "
-echo " "
-echo "Please restart to implement changes!"
-echo "To Restart type sudo reboot"
+# copy gopigo executable
+# the gopigo executable is for reporting data about the gopigo board
+sudo chmod +x gopigo
+sudo cp gopigo /usr/bin
+install_spi_i2c
+install_avr
+install_control_panel
+
+sudo chmod +x $ROBOT_DIR/Software/Scratch/GoPiGo_Scratch_Scripts/*.sh
